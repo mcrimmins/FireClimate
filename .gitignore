@@ -1,0 +1,13 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+gadm36_MEX_0_sp.rds
+*.rds
+*.Rproj
+*.log
+*.png
+*.sh
+*.grd
+*.gri
+*.html

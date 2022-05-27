@@ -1,0 +1,4 @@
+*.log
+*.RData
+pushNotify.R
+BurnTrackerPlots/
