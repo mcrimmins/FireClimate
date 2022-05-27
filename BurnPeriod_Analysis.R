@@ -43,5 +43,28 @@ statsRAWS <- do.call(rbind, statsRAWS)
 statsRAWS$yrs<-statsRAWS$maxYr-statsRAWS$minYr
 #####
 
+# focus on station
 tempRAWS<-  allRAWS_comb[[2]] 
+# add date
+tempRAWS$date<-as.Date(paste0(tempRAWS$year,"-",tempRAWS$month,"-",tempRAWS$day))
+# fix off 00 hrs
+tempRAWS$Time<-plyr::round_any(tempRAWS$Time, 10)
+# add in day/night label
+tempRAWS$diurnal<-ifelse(tempRAWS$Time<=2000 & tempRAWS$Time>=900, "day","night")
+# subset outside of 0 and 100
+tempRAWS<-subset(tempRAWS, Moisture<100)
+
+# plots
+library(ggplot2)
+
+ggplot(tempRAWS, aes(Time, Moisture, group=Time))+
+  geom_boxplot()+
+  facet_wrap(.~diurnal)
+
+ggplot(tempRAWS, aes(Temp, ws, color=Temp))+
+  geom_point()+
+  facet_grid(month~Time)+
+  geom_smooth(method = "lm", se = FALSE, color="red")+
+  scale_color_gradientn(colours = rev(rainbow(5)))
+
 
