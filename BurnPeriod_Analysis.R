@@ -44,7 +44,7 @@ statsRAWS$yrs<-statsRAWS$maxYr-statsRAWS$minYr
 #####
 
 # focus on station
-tempRAWS<-  allRAWS_comb[[2]] 
+tempRAWS<-  allRAWS_comb[[39]] 
 # add date
 tempRAWS$date<-as.Date(paste0(tempRAWS$year,"-",tempRAWS$month,"-",tempRAWS$day))
 # fix off 00 hrs
@@ -66,5 +66,22 @@ ggplot(tempRAWS, aes(Temp, ws, color=Temp))+
   facet_grid(month~Time)+
   geom_smooth(method = "lm", se = FALSE, color="red")+
   scale_color_gradientn(colours = rev(rainbow(5)))
+
+
+# burn period monthly stats
+# load in RAWS data
+load("/home/crimmins/RProjects/FireClimate/BurnPeriodTracker/burnList.RData")
+temp<-burnList[[39]]
+
+
+dayQuantiles<- temp %>% group_by(month) %>% summarise(
+  q05 = quantile(rh_lt_20,0.05,na.rm='TRUE'),
+  q50 = quantile(rh_lt_20,0.50,na.rm='TRUE'),
+  q95 = quantile(rh_lt_20,0.95,na.rm='TRUE'),
+  min = min(rh_lt_20,na.rm='TRUE'),
+  max = max(rh_lt_20,na.rm='TRUE'),
+  avg = mean(rh_lt_20,na.rm='TRUE'),
+  n = n())
+
 
 
